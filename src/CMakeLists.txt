@@ -86,8 +86,8 @@ endif()
 
 set_target_properties(getcfname PROPERTIES LINKER_LANGUAGE CXX)
 
-add_executable(getcfname_exe main.cpp)
-target_link_libraries(getcfname_exe getcfname)
+add_executable(v8cfname main.cpp)
+target_link_libraries(v8cfname getcfname)
 
 add_definitions(-DBOOST_UUID_FORCE_AUTO_LINK)
 add_definitions(-Dgetcfname)
