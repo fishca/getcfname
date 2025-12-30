@@ -27,12 +27,12 @@
 //---------------------------------------------------------------------------
 enum class MessageState
 {
-	Empty = -1,
-	Hint = 0,
-	Succesfull = 1,
-	Info = 2,
-	Warning = 3,
-	Error = 4
+	Empty      = -1,
+	Hint       =  0,
+	Succesfull =  1,
+	Info       =  2,
+	Warning    =  3,
+	Error      =  4
 };
 
 class IMessageRegistration

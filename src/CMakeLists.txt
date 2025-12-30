@@ -50,13 +50,13 @@ set (GETCFNAME_SOURCES Base64.cpp BinaryDecimalNumber.cpp BinaryGuid.cpp
 	Index.cpp MemBlock.cpp MessageRegistration.cpp Packdata.cpp PackDirectory.cpp
 	Parse_tree.cpp SupplierConfig.cpp SupplierConfigBuilder.cpp Table.cpp
 	TableFiles.cpp TableFileStream.cpp TableIterator.cpp TableRecord.cpp
-	TempStream.cpp UZLib.cpp V8Object.cpp)
+	TempStream.cpp UZLib.cpp V8Object.cpp Messenger.cpp)
 
 set (GETCFNAME_HEADERS Base64.h BinaryDecimalNumber.h BinaryGuid.h Class_1CD.h
 	Common.h Constants.h CRC32.h db_ver.h DetailedException.h Field.h FieldType.h
 	Index.h MemBlock.h MessageRegistration.h NodeTypes.h Packdata.h PackDirectory.h
 	Parse_tree.h SupplierConfig.h SupplierConfigBuilder.h Table.h TableFiles.h
-	TableFileStream.h TableIterator.h TableRecord.h TempStream.h UZLib.h V8Object.h)
+	TableFileStream.h TableIterator.h TableRecord.h TempStream.h UZLib.h V8Object.h Messenger.h)
 
 # .CF API
 set (GETCFNAME_SOURCES ${GETCFNAME_SOURCES} cfapi/V8File.cpp cfapi/V8Catalog.cpp cfapi/TV8FileStream.cpp
@@ -67,40 +67,16 @@ set (GETCFNAME_HEADERS ${GETCFNAME_HEADERS} cfapi/V8File.h cfapi/V8Catalog.h cfa
 set (GETCFNAME_SOURCES ${GETCFNAME_SOURCES} ${SYSTEMCLASSES_SOURCES})
 set (GETCFNAME_HEADERS ${GETCFNAME_HEADERS} ${SYSTEMCLASSES_HEADERS})
 
-if (MSVC)
-	add_library (getcfname STATIC ${GETCFNAME_SOURCES} ${GETCFNAME_HEADERS})
-else()
 
-	if (UNIX)
-		set_source_files_properties(${GETCFNAME_SOURCES}
-				PROPERTIES COMPILE_FLAGS
-				"-fPIC ")
-	endif()
 
-	if (NOGUI)
-		add_library (getcfname STATIC ${GETCFNAME_SOURCES} ${GETCFNAME_HEADERS})
-	else()
-		add_library (getcfname SHARED ${GETCFNAME_SOURCES} ${GETCFNAME_HEADERS})
-	endif()
-endif()
-
-set_target_properties(getcfname PROPERTIES LINKER_LANGUAGE CXX)
-
-add_executable(v8cfname main.cpp)
-target_link_libraries(v8cfname getcfname)
+add_executable(v8cfname main.cpp ${GETCFNAME_SOURCES})
 
 add_definitions(-DBOOST_UUID_FORCE_AUTO_LINK)
 add_definitions(-Dgetcfname)
 find_package (Boost 1.53 REQUIRED COMPONENTS filesystem regex system)
 include_directories (${Boost_INCLUDE_DIRS})
-target_link_libraries (getcfname ${Boost_LIBRARIES})
+target_link_libraries (v8cfname ${Boost_LIBRARIES})
 
 find_package (ZLIB REQUIRED)
 include_directories (${ZLIB_INCLUDE_DIRS})
-target_link_libraries (getcfname ${ZLIB_LIBRARIES})
-
-if (NOT MSVC)
-	if (NOT NOGUI)
-		install (TARGETS getcfname DESTINATION lib)
-	endif()
-endif()
+target_link_libraries (v8cfname ${ZLIB_LIBRARIES})

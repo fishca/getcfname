@@ -40,3 +40,6 @@
 # debug information files
 *.dwo
 build
+CMakeFiles
+cmake_install.cmake
+CMakeCache.txt
